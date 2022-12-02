@@ -70,11 +70,11 @@ def direct_link_generator(link: str):
         return udrive(link)
     elif is_sharer_link(link):
         return sharer_pw(link)
-    elif is_rock_link(link):
+    elif 'rocklinks.net' in link:
         return rock(link)
-    elif is_try2link_link(link):
+    elif 'try2link.com' in link:
         return try2link(link)
-    elif is_ez4_link(link):
+    elif 'ez4short.com' in link:
         return ez4(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
