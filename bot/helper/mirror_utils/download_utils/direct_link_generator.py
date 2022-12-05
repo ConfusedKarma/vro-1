@@ -76,6 +76,9 @@ def direct_link_generator(link: str):
         return try2link(link)
     elif 'ez4short.com' in link:
         return ez4(link)
+    # shareus
+    elif "https://shareus.io/" in url:
+        return shareus(url)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
