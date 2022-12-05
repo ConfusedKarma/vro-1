@@ -39,7 +39,8 @@ def _clone(message, bot, multi=0):
     is_unified = is_unified_link(link)
     is_udrive = is_udrive_link(link)
     is_sharer = is_sharer_link(link)
-    if (is_gdtot or is_unified or is_udrive or is_sharer):
+    is_shareus = shareus(link)
+    if (is_gdtot or is_unified or is_udrive or is_sharer or is_shareus):
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
             LOGGER.info(f"Processing: {link}")
@@ -51,6 +52,8 @@ def _clone(message, bot, multi=0):
                 link = udrive(link)
             if is_sharer:
                 link = sharer_pw(link)
+            if is_shareus:
+                link = shareus(link)
             deleteMessage(bot, msg)
         except DirectDownloadLinkException as e:
             deleteMessage(bot, msg)
