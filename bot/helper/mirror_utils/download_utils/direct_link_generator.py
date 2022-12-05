@@ -641,3 +641,9 @@ def ez4(url):
     try:
         return r.json()['url']
     except: return "Something went wrong :("
+
+def shareus(url):
+    token = url.split("=")[-1]
+    bypassed_url = "https://us-central1-my-apps-server.cloudfunctions.net/r?shortid="+ token
+    response = requests.get(bypassed_url).text
+    return response
