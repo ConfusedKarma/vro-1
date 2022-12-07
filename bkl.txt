@@ -1,3 +1,4 @@
+playwright
 anytree
 appdirs
 aria2p
@@ -30,4 +31,4 @@ tgCrypto
 urllib3
 yt-dlp
 cloudscraper
-playwright
+
