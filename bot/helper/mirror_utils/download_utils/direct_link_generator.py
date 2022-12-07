@@ -12,6 +12,7 @@ from lxml import etree
 from cfscrape import create_scraper
 import cloudscraper
 from bs4 import BeautifulSoup
+from playwright.sync_api import Playwright, sync_playwright, expect
 from base64 import standard_b64encode
 from bot import LOGGER, UPTOBOX_TOKEN, CRYPT, UNIFIED_EMAIL, UNIFIED_PASS, HUBDRIVE_CRYPT, KATDRIVE_CRYPT, DRIVEFIRE_CRYPT, XSRF_TOKEN, laravel_session
 from bot.helper.telegram_helper.bot_commands import BotCommands
@@ -70,6 +71,8 @@ def direct_link_generator(link: str):
         return udrive(link)
     elif is_sharer_link(link):
         return sharer_pw(link)
+    elif is_filepress_link(link):
+        return filepress(link)
     elif 'rocklinks.net' in link:
         return rock(link)
     elif 'try2link.com' in link:
@@ -650,3 +653,37 @@ def shareus(url):
     bypassed_url = "https://us-central1-my-apps-server.cloudfunctions.net/r?shortid="+ token
     response = requests.get(bypassed_url).text
     return response
+
+def prun(playwright: Playwright, link:str) -> str:
+    """ filepress google drive link generator
+    By https://t.me/maverick9099
+    GitHub: https://github.com/majnurangeela"""
+
+    browser = playwright.chromium.launch()
+    context = browser.new_context()
+
+    page = context.new_page()
+    page.goto(link)
+
+    firstbtn = page.locator("xpath=//div[text()='Direct Download']/parent::button")
+    expect(firstbtn).to_be_visible()
+    firstbtn.click()
+    sleep(10)
+
+    secondBtn = page.get_by_role("button", name="Download Now")
+    expect(secondBtn).to_be_visible()
+    with page.expect_navigation():
+        secondBtn.click()
+
+    Flink = page.url
+
+    if 'drive.google.com' in Flink:
+        return Flink
+    else:
+        raise DirectDownloadLinkException("Unable To Get Google Drive Link!")
+
+
+def filepress(link:str):
+    with sync_playwright() as playwright:
+        flink = prun(playwright, link)
+        return flink
