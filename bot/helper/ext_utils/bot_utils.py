@@ -233,7 +233,7 @@ def is_gdrive_link(url: str):
     return "drive.google.com" in url
 
 def is_filepress_link(url: str):
-    url = re.match(r'https?://(filepress|filebee)\.\S+', url)
+    url = re_match(r'https?://(filepress|filebee)\.\S+', url)
     return bool(url)
 
 def is_gdtot_link(url: str):
