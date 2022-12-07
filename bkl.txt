@@ -1,4 +1,3 @@
-playwright
 anytree
 appdirs
 aria2p
