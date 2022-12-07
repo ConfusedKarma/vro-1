@@ -237,7 +237,7 @@ def is_filepress_link(url: str):
     return bool(url)
 
 def is_gdtot_link(url: str):
-    url = re_match(r'https?://.+\.gdtot\.gdbot\.\S+', url)
+    url = re_match(r'https?://.+\.gdtot\.gdbot.xyz\.\S+', url)
     return bool(url)
 
 def is_unified_link(url: str):
