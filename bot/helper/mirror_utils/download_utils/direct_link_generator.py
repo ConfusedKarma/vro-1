@@ -524,7 +524,9 @@ def udrive(url: str) -> str:
         client.cookies.update({'crypt': KATDRIVE_CRYPT})
     if 'katdrive' in url:
         client.cookies.update({'crypt': KATDRIVE_CRYPT})
-    if 'kolop' in url:
+    if "kolop" in url:
+        if "kolop.icu" in url:
+            url = url.replace(".icu",".cyou")
         client.cookies.update({'crypt': KATDRIVE_CRYPT})
     if 'drivefire' in url:
         client.cookies.update({'crypt': DRIVEFIRE_CRYPT})
