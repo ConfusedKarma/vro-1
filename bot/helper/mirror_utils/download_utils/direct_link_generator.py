@@ -5,6 +5,8 @@ import re
 
 from time import sleep
 from base64 import b64decode
+from http.cookiejar import MozillaCookieJar
+from os import path
 from urllib.parse import urlparse, unquote
 from json import loads as jsnloads
 from lk21 import Bypass
@@ -73,6 +75,8 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
+    elif 'terabox' in domain:
+        return terabox(link)
     elif 'rocklinks.net' in link:
         return rock(link)
     elif 'try2link.com' in link:
@@ -685,8 +689,28 @@ def prun(playwright: Playwright, link:str) -> str:
     else:
         raise DirectDownloadLinkException("Unable To Get Google Drive Link!")
 
-
 def filepress(link:str):
     with sync_playwright() as playwright:
         flink = prun(playwright, link)
         return flink
+
+def terabox(url) -> str:
+    if not path.isfile('terabox.txt'):
+        raise DirectDownloadLinkException("ERROR: terabox.txt not found")
+    try:
+        session = Session()
+        res = session.request('GET', url)
+        key = res.url.split('?surl=')[-1]
+        jar = MozillaCookieJar('terabox.txt')
+        jar.load()
+        session.cookies.update(jar)
+        res = session.request('GET', f'https://www.terabox.com/share/list?app_id=250528&shorturl={key}&root=1')
+        result = res.json()['list']
+    except Exception as e:
+        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
+    if len(result) > 1:
+        raise DirectDownloadLinkException("ERROR: Can't download mutiple files")
+    result = result[0]
+    if result['isdir'] != '0':
+        raise DirectDownloadLinkException("ERROR: Can't download folder")
+    return result['dlink']
