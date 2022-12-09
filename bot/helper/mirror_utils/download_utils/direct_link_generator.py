@@ -75,7 +75,7 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
-    elif 'terabox' in domain:
+    elif 'terabox' in link:
         return terabox(link)
     elif 'rocklinks.net' in link:
         return rock(link)
