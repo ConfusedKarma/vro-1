@@ -86,6 +86,8 @@ def direct_link_generator(link: str):
     # shareus
     elif "https://shareus.in/" in link:
         return shareus(link)
+    elif 'mdisk.me' in link:
+        return mdisk(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
@@ -716,3 +718,21 @@ def terabox(url) -> str:
     if result['isdir'] != '0':
         raise DirectDownloadLinkException("ERROR: Can't download folder")
     return result['dlink']
+
+def mdisk(url: str) -> str:
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
+    }
+    url = url[:-1] if url[-1] == '/' else url
+    token = url.split("/")[-1]
+    
+    
+    api = f"https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={token}"
+    
+    response = requests.get(api, headers=headers).json() 
+        
+    download_url = response["download"]
+    download_url = download_url.replace(" ", "%20")
+    
+    return download_url
