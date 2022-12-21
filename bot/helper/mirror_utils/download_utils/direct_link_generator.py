@@ -88,6 +88,8 @@ def direct_link_generator(link: str):
         return shareus(link)
     elif 'mdisk.me' in link:
         return mdisk(link)
+    elif 'gofile.io' in link:
+        return gofile(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
@@ -736,3 +738,25 @@ def mdisk(url: str) -> str:
     download_url = download_url.replace(" ", "%20")
     
     return download_url
+
+def gofile(url:str) -> str:
+    
+    api_uri = "https://api.gofile.io" 
+    url = url[:-1] if url[-1] == '/' else url
+    client = requests.Session()
+    
+    response  = client.get(f"{api_uri}/createAccount").json()
+    
+    data = {
+        "contentId": url.split("/")[-1],
+        "token": response ["data"]["token"],
+        "websiteToken": 12345,
+        "cache": "true",
+    }
+    response  = client.get(f"{api_uri}/getContent", params=data).json()
+    
+    for item in response["data"]["contents"].values():
+        content = item
+        download_url= content["link"]
+       
+        return download_url
