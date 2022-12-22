@@ -31,3 +31,4 @@ urllib3
 yt-dlp
 cloudscraper
 playwright
+html2image
