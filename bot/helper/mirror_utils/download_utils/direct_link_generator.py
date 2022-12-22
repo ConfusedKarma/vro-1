@@ -578,7 +578,7 @@ def udrive(url: str) -> str:
 
     return flink
 
-def sharerpw_pw(url: str, sharerpw_xsrf_token:None, sharerpw_laravel_session: None)-> str:
+def sharer_pw(url: str, sharerpw_xsrf_token:None, sharerpw_laravel_session: None)-> str:
     
     client = requests.Session()
     client.cookies["XSRF-TOKEN"] = sharerpw_xsrf_token
