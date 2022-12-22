@@ -578,28 +578,25 @@ def udrive(url: str) -> str:
 
     return flink
 
-def sharer_pw(url: str)-> str:
+def sharerpw_pw(url: str, sharerpw_xsrf_token:None, sharerpw_laravel_session: None)-> str:
     
-    client = cloudscraper.create_scraper(delay=10, browser='chrome')
-    client.cookies["XSRF-TOKEN"] = XSRF_TOKEN
-    client.cookies["laravel_session"] = laravel_session
+    client = requests.Session()
+    client.cookies["XSRF-TOKEN"] = sharerpw_xsrf_token
+    client.cookies["laravel_session"] = sharerpw_laravel_session
+    
     
     res = client.get(url)
     token = re.findall("_token\s=\s'(.*?)'", res.text, re.DOTALL)[0]
     data = { '_token': token, 'nl' :1}
-    headers={ 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-requested-with': 'XMLHttpRequest'}
 
     try:
-        response = client.post(url+'/dl', headers=headers, data=data).json()
+        response = client.post(url+'/dl', headers={ 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-requested-with': 'XMLHttpRequest'}, data=data ).json()
         drive_link = response
-        return drive_link['url']
+        return drive_link
     
     except:
-        if drive_link["message"] == "OK":
-            raise DirectDownloadLinkException("Something went wrong. Could not generate GDrive URL for your Sharer Link")
-        else:
-            finalMsg = BeautifulSoup(drive_link["message"], "lxml").text
-            raise DirectDownloadLinkException(finalMsg)
+        if drive_link["message"] == "OK": return "Something went wrong. Could not generate GDrive URL for your Sharer Link"
+        else: return drive_link["message"]
 
 def rock(url: str) -> str:
     client = cloudscraper.create_scraper(allow_brotli=False)
