@@ -581,8 +581,8 @@ def udrive(url: str) -> str:
 def sharer_pw(url: str, sharerpw_xsrf_token:None, sharerpw_laravel_session: None)-> str:
     
     client = requests.Session()
-    client.cookies["XSRF-TOKEN"] = sharerpw_xsrf_token
-    client.cookies["laravel_session"] = sharerpw_laravel_session
+    client.cookies["XSRF-TOKEN"] = XSRF_TOKEN
+    client.cookies["laravel_session"] = laravel_session
     
     
     res = client.get(url)
