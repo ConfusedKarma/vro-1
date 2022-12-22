@@ -132,6 +132,58 @@ class GoogleDriveHelper:
         finally:
             return msg
 
+    def __set_permission_public(self, file_id):
+        permissions = {
+            'type': 'anyone',
+            'role': 'reader'
+        }
+        return self.__service.permissions().create(
+                   fileId=file_id,
+                   body=permissions,
+                   supportsAllDrives=True).execute()
+
+    def __set_permission_email(self, file_id, email):
+        permissions = {
+            'type': 'user',
+            'role': 'reader',
+            'emailAddress': email
+        }
+        return self.__service.permissions().create(
+                   fileId=file_id,
+                   body=permissions,
+                   supportsAllDrives=True,
+                   sendNotificationEmail=False).execute()
+
+    def setPermission(self, link, access):
+        try:
+            file_id = self.__getIdFromUrl(link)
+        except (KeyError, IndexError):
+            msg = "Drive ID not found"
+            LOGGER.error(msg)
+            return msg
+        msg = ''
+        try:
+            if access != '':
+                self.__set_permission_email(file_id, access)
+                msg = f"Added <code>{access}</code> as viewer"
+            else:
+                self.__set_permission_public(file_id)
+                msg = "Set permission to <code>Anyone with the link</code>"
+        except HttpError as err:
+            err = str(err).replace('>', '').replace('<', '')
+            if "File not found" in err:
+                msg = "File not found"
+            elif "insufficientFilePermissions" in err:
+                token_service = self.__alt_authorize()
+                if token_service is not None:
+                    self.__service = token_service
+                    return self.setPermission(link, access)
+                msg = "Insufficient file permissions"
+            else:
+                msg = err
+            LOGGER.error(msg)
+        return msg
+
     def __switchServiceAccount(self):
         global SERVICE_ACCOUNT_INDEX
         service_account_count = len(listdir("accounts"))
