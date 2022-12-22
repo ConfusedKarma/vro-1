@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler
 
 from bot import LOGGER, dispatcher
-from bot.helper.drive_utils.gdriveTools import GoogleDriveHelper
+from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.ext_utils.bot_utils import new_thread, is_gdrive_link
 from bot.helper.telegram_helper.message_utils import sendMessage, deleteMessage
 from bot.helper.telegram_helper.bot_commands import BotCommands
