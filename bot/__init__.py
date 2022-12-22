@@ -429,6 +429,21 @@ try:
 except:
     pass
 try:
+    LOL_URL = getConfig('LOL_URL')
+    if len(LOL_URL) == 0:
+        raise KeyError
+    try:
+        res = rget(LOL_URL)
+        if res.status_code == 200:
+            with open('table.css', 'wb+') as f:
+                f.write(res.content)
+        else:
+            log_error(f"Failed to downloaD, link got HTTP response: {res.status_code}")
+    except Exception as e:
+        log_error(f"LOL_URL: {e}")
+except:
+    pass
+try:
     MULTI_SEARCH_URL = getConfig('MULTI_SEARCH_URL')
     if len(MULTI_SEARCH_URL) == 0:
         raise KeyError
