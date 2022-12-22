@@ -2,10 +2,11 @@ import logging
 import math
 from datetime import timedelta
 
+from bot import dispatcher
 import qbittorrentapi
 from html2image import Html2Image
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler
+from telegram.ext import ContextTypes, CommandHandler, CallbackQueryHandler
 
 hti = Html2Image()
 
@@ -227,8 +228,8 @@ async def options_query_handler(update: Update, context: ContextTypes.DEFAULT_TY
     paused_handler = CommandHandler('downloading', downloading)
     resumed_handler = CommandHandler('resumed', resumed)
     completed_handler = CommandHandler('completed', completed)
-    application.add_handler(magnet_handler)
-    application.add_handler(resumed_handler)
-    application.add_handler(paused_handler)
-    application.add_handler(completed_handler)
-    application.add_handler(CallbackQueryHandler(options_query_handler))
+    dispatcher.add_handler(magnet_handler)
+    dispatcher.add_handler(resumed_handler)
+    dispatcher.add_handler(paused_handler)
+    dispatcher.add_handler(completed_handler)
+    dispatcher.add_handler(CallbackQueryHandler(options_query_handler))
