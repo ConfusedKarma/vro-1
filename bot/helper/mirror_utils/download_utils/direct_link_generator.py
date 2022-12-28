@@ -522,7 +522,7 @@ def udrive(url: str) -> str:
     
     if "hubdrive" in url:
         if "hubdrive.in" in url:
-            url = url.replace(".in",".pro",".cc",".pw",".mx")
+            url = url.replace(".in",".pro",".cc",".pw",".mx",".tv")
         client.cookies.update({'crypt': HUBDRIVE_CRYPT})
     if 'drivehub' in url:
         client.cookies.update({'crypt': KATDRIVE_CRYPT})
