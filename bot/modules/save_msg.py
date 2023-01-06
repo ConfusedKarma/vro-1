@@ -1,7 +1,5 @@
-from telegram.ext import CallbackQueryHandler
-
 from bot import dispatcher
-
+from telegram.ext import CallbackQueryHandler
 
 def save_message(update, context):
     query = update.callback_query
@@ -13,7 +11,5 @@ def save_message(update, context):
         except:
             query.answer('Start the bot in private and try again', show_alert=True)
 
-
-msgsave_handler = CallbackQueryHandler(save_message, pattern="save", run_async=True)
-
+msgsave_handler = CallbackQueryHandler(save_message, pattern="save")
 dispatcher.add_handler(msgsave_handler)
