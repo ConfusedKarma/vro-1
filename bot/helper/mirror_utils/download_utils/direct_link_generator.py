@@ -489,7 +489,7 @@ def unified(url: str) -> str:
         flink = info_parsed['gdrive_link']
         return flink
       
-    elif urlparse(url).netloc == 'gdflix.pro':
+    elif urlparse(url).netloc == 'gdflix.lol':
         flink = info_parsed['gdrive_link']
         return flink
     
