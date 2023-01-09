@@ -263,10 +263,8 @@ async def telegram_mediainfo(client,message):
         
         
 
-commands = ["mediainfo", "m"]
-prefixes = ["!", "/"]
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
-@Client.on_message(filters.command(commands, **prefixes) & filters.user(AUTHORIZED_CHATS))
+@Client.on_message(filters.command("m") & filters.user(AUTHORIZED_CHATS))
 async def mediainfo(client, message: Message):
      
     if message.reply_to_message:
