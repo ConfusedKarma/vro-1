@@ -265,7 +265,7 @@ CUSTOM_CMD = ["/", "!"]
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
 
-@Client.on_message(filters.command(m, CUSTOM_CMD))
+@Client.on_message(filters.command("m", CUSTOM_CMD))
 async def mediainfo(client, message: Message):
      
     if message.reply_to_message:
