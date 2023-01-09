@@ -261,12 +261,11 @@ async def telegram_mediainfo(client,message):
         await reply_msg.delete()
         await message.reply_text(f"Something went wrong while generating Mediainfo of replied Telegram file.", quote=True)
         
-commands = ["mediainfo", "m"]
 CUSTOM_CMD = ["/", "!"]
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
 
-@Client.on_message(filters.command(commands, CUSTOM_CMD))
+@Client.on_message(filters.command(m, CUSTOM_CMD))
 async def mediainfo(client, message: Message):
      
     if message.reply_to_message:
