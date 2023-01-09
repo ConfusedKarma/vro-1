@@ -225,14 +225,6 @@ def get_readable_time(seconds: int) -> str:
     result += f'{seconds}s'
     return result
 
-def get_readable_bitrate(bitrate_kbps):
-    if bitrate_kbps > 10000:
-        bitrate = str(round(bitrate_kbps/1000, 2)) + ' ' + 'Mb/s'
-    else:
-        bitrate = str(round(bitrate_kbps, 2)) + ' ' + 'kb/s'
-
-    return bitrate
-
 def is_url(url: str):
     url = re_findall(URL_REGEX, url)
     return bool(url)
