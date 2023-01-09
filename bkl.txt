@@ -31,4 +31,3 @@ urllib3
 yt-dlp
 cloudscraper
 playwright
-httpx
