@@ -78,14 +78,6 @@ def getDownloadByGid(gid):
                 return dl
     return None
 
-def get_readable_bitrate(bitrate_kbps):
-    if bitrate_kbps > 10000:
-        bitrate = str(round(bitrate_kbps/1000, 2)) + ' ' + 'Mb/s'
-    else:
-        bitrate = str(round(bitrate_kbps, 2)) + ' ' + 'kb/s'
-
-    return bitrate
-
 def getAllDownload(req_status: str):
     with download_dict_lock:
         for dl in list(download_dict.values()):
