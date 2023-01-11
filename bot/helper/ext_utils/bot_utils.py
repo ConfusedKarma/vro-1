@@ -8,9 +8,14 @@ from requests import head as rhead
 from urllib.request import urlopen
 from telegram import InlineKeyboardMarkup
 
-from bot import download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR
+from bot import download_dict, download_dict_lock, STATUS_LIMIT, botStartTime, DOWNLOAD_DIR, AUTHORIZED_CHATS
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
+
+
+from functools import wraps
+from pyrogram.types import Message, CallbackQuery
+
 
 MAGNET_REGEX = r"magnet:\?xt=urn:btih:[a-zA-Z0-9]*"
 
@@ -70,6 +75,14 @@ def getDownloadByGid(gid):
             if dl.gid() == gid:
                 return dl
     return None
+
+def get_readable_bitrate(bitrate_kbps):
+    if bitrate_kbps > 10000:
+        bitrate = str(round(bitrate_kbps/1000, 2)) + ' ' + 'Mb/s'
+    else:
+        bitrate = str(round(bitrate_kbps, 2)) + ' ' + 'kb/s'
+
+    return bitrate
 
 def getAllDownload(req_status: str):
     with download_dict_lock:
@@ -301,3 +314,15 @@ def get_content_type(link: str) -> str:
         except:
             content_type = None
     return content_type
+
+def authorized_chats(func: Callable) -> Callable:
+    """
+    Restrict commands to specific chats.
+    """
+
+    @wraps(func)
+    async def decorator(client: Client, message: Message):
+        if message.chat.id in AUTHORIZED_CHATS:
+            return await func(client, message)
+
+    return decorator
