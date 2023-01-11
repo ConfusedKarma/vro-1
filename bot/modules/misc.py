@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from bot.helper.ext_utils.bot_utils import *
 
-from bot import app as Client
+from bot import app
 from bot import LOGGER
 
 from googleapiclient.http import MediaIoBaseDownload
@@ -265,7 +265,7 @@ CUSTOM_CMD = ["/", "!"]
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
 
-@Client.on_message(filters.command("m", CUSTOM_CMD))
+@app.on_message(filters.command("m", CUSTOM_CMD))
 @authorized_chats
 async def mediainfo(client, message: Message):
      
