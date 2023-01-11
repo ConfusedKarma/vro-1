@@ -146,6 +146,8 @@ except:
     log_error("One or more env variables missing! Exiting now")
     exit(1)
 
+CUSTOM_CMD = environ.get("CUSTOM_CMD", "! /").split()
+
 try:
     IS_PREMIUM_USER = False
     USER_SESSION_STRING = getConfig('USER_SESSION_STRING')
