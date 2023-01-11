@@ -1,3 +1,4 @@
+httpx
 anytree
 appdirs
 aria2p
