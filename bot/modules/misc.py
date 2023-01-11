@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from bot.helper.ext_utils.bot_utils import *
 
-from bot import app
+from bot import vro
 from bot import LOGGER
 
 from googleapiclient.http import MediaIoBaseDownload
@@ -265,7 +265,7 @@ async def telegram_mediainfo(client,message):
         
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
-@app.on_message(filters.command("m", CUSTOM_CMD))
+@vro.on_message(filters.command("m", CUSTOM_CMD))
 @authorized_chats
 async def mediainfo(client, message: Message):
      
@@ -294,7 +294,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 # View Structure Telegram Message As JSON
-@app.on_message(filters.command(["json"], CUSTOM_CMD))
+@vro.on_message(filters.command(["json"], CUSTOM_CMD))
 async def jsonify(_, message):
     the_real_message = None
     reply_to_id = None
