@@ -262,7 +262,7 @@ async def telegram_mediainfo(client,message):
         await message.reply_text(f"Something went wrong while generating Mediainfo of replied Telegram file.", quote=True)
         
 commands = ["mediainfo", "m"]
-prefixes = ["/", "!"]
+prefixes = ["/"]
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
 
