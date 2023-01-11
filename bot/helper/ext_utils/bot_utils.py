@@ -14,7 +14,8 @@ from bot.helper.telegram_helper.button_build import ButtonMaker
 
 
 from functools import wraps
-from pyrogram.types import Message, CallbackQuery
+from pyrogram.types import Message
+from typing import Callable
 
 
 MAGNET_REGEX = r"magnet:\?xt=urn:btih:[a-zA-Z0-9]*"
