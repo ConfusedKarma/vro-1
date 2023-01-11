@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from bot.helper.ext_utils.bot_utils import *
 
-from bot import app as Client
+from bot import app
 from bot import LOGGER
 
 from googleapiclient.http import MediaIoBaseDownload
@@ -261,12 +261,12 @@ async def telegram_mediainfo(client,message):
         await reply_msg.delete()
         await message.reply_text(f"Something went wrong while generating Mediainfo of replied Telegram file.", quote=True)
         
-commands = ["mediainfo", "m"]
-prefixes = ["/"]
+#commands = ["mediainfo", "m"]
+#prefixes = ["/"]
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
 
-@Client.on_message(filters.command(commands, **prefixes))
+@app.on_message(filters.command(["mediainfo", "m"]))
 @authorized_chats
 async def mediainfo(client, message: Message):
      
