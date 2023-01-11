@@ -24,6 +24,8 @@ import httpx
 
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 
+CUSTOM_CMD = ["/", "!"]
+
 ##functions
 
 async def katbin_paste(text: str) -> str:
@@ -263,7 +265,7 @@ async def telegram_mediainfo(client,message):
         
 
 mediainfo_usage = f"**Generate mediainfo from Google Drive Links, Telegram files or direct download links. Reply to any telegram file or just pass the link after the command."
-@app.on_message(filters.command(["mediainfo", "m"]))
+@app.on_message(filters.command("m", CUSTOM_CMD))
 @authorized_chats
 async def mediainfo(client, message: Message):
      
