@@ -15,6 +15,7 @@ from bot.helper.telegram_helper.button_build import ButtonMaker
 
 from functools import wraps
 from pyrogram.types import Message
+from pyrogram import Client
 from typing import Callable
 
 
