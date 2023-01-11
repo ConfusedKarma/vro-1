@@ -168,6 +168,14 @@ try:
 except:
     rss_session = None
 
+# Pyrogram Bot Client
+vro = Client(
+    "vro",
+    api_id=TELEGRAM_API,
+    api_hash=TELEGRAM_HASH,
+    bot_token=BOT_TOKEN,
+)
+
 def aria2c_init():
     try:
         log_info("Initializing Aria2c")
@@ -497,6 +505,8 @@ try:
     SEARCH_PLUGINS = jsnloads(SEARCH_PLUGINS)
 except:
     SEARCH_PLUGINS = None
+
+vro.start()
 
 updater = tgUpdater(token=BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 15})
 bot = updater.bot
