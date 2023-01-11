@@ -146,7 +146,7 @@ except:
     log_error("One or more env variables missing! Exiting now")
     exit(1)
 
-CUSTOM_CMD = getConfig("CUSTOM_CMD", "/").split()
+CUSTOM_CMD = getConfig("CUSTOM_CMD").split()
 
 try:
     IS_PREMIUM_USER = False
