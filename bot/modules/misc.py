@@ -12,6 +12,7 @@ from bot.helper import http
 from json import loads as json_loads
 from os import remove
 from re import compile as compiles
+from http.cookies import SimpleCookie
 
 # View Structure Telegram Message As JSON
 @vro.on_message(filters.command(["json"], CUSTOM_CMD))
@@ -89,6 +90,27 @@ def humanbytes(size: int):
         real_size = "Can't Define Real Size !"
     return real_size
 
+async def rentry(teks):
+    # buat dapetin cookie
+    cookie = SimpleCookie()
+    kuki = (await http.get("https://rentry.co")).cookies
+    cookie.load(kuki)
+    kukidict = {key: value.value for key, value in cookie.items()}
+    # headernya
+    header = {"Referer": "https://rentry.co"}
+    payload = {"csrfmiddlewaretoken": kukidict["csrftoken"], "text": teks}
+    return (
+        (
+            await http.post(
+                "https://rentry.co/api/new",
+                data=payload,
+                headers=header,
+                cookies=kukidict,
+            )
+        )
+        .json()
+        .get("url")
+    )
 
 # Pattern if extension supported, PR if want to add more
 pattern = compiles(r"^text/|json$|yaml$|xml$|toml$|x-sh$|x-shellscript$|x-subrip$")
