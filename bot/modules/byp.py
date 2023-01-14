@@ -3,7 +3,7 @@ from bot.helper.mirror_utils.download_utils.direct_link_generator import *
 
 import regex as re
 
-CUSTOM_CMD = ["/", "!""]
+CUSTOM_CMD = ["/", "!"]
 
 @vro.on_message(filters.command("byp", CUSTOM_CMD) & filters.regex(r"https?://[^\s]+") & filters.user(SUDO_USERS))
 async def byp(bot, update):
