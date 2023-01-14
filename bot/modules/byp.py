@@ -1,11 +1,11 @@
-from bot import vro, SUDO_USERS
+from bot import vro, OWNER_ID
 from bot.helper.mirror_utils.download_utils.direct_link_generator import *
 
 import regex as re
 
 CUSTOM_CMD = ["/", "!"]
 
-@vro.on_message(filters.command("byp", CUSTOM_CMD) & filters.regex(r"https?://[^\s]+") & filters.user(SUDO_USERS))
+@vro.on_message(filters.command("byp", CUSTOM_CMD) & filters.regex(r"https?://[^\s]+") & filters.user(OWNER_ID))
 async def byp(bot, update):
     url = update.matches[0].group(0)
     bsdk = shareus(url)
