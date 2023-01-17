@@ -44,13 +44,13 @@ def permissionNodeP(update, context):
     if len(args) > 1:
         link = args[1].strip()
         try:
-            access = args[2].strip()
+            self = args[2].strip()
         except IndexError:
             pass
     if reply_to:
         link = reply_to.text.split(maxsplit=1)[0].strip()
         try:
-            access = args[1].strip()
+            self = args[1].strip()
         except IndexError:
             pass
     if is_gdrive_link(link):
