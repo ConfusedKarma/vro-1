@@ -40,7 +40,7 @@ def permissionNodeP(update, context):
     args = update.message.text.split()
     reply_to = update.message.reply_to_message
     link = ''
-    access = ''
+    self = ''
     if len(args) > 1:
         link = args[1].strip()
         try:
