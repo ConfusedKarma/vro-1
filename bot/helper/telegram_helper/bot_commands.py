@@ -52,5 +52,6 @@ class _BotCommands:
         self.ExecCommand = f'exec{CMD_INDEX}'
         self.ClearLocalsCommand = f'clearlocals{CMD_INDEX}'
         self.PermissionCommand = f'perm{CMD_INDEX}'
+        self.PermissionCommandP = f'pvt{CMD_INDEX}'
 
 BotCommands = _BotCommands()
