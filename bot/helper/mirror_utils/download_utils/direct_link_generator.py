@@ -75,7 +75,7 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
-    elif 'terabox.com' in link:
+    elif any(x in link for x in ['terabox.com', 'nephobox.com']):
         return terabox(link)
     elif 'rocklinks.net' in link:
         return rock(link)
@@ -706,7 +706,7 @@ def terabox(url) -> str:
     if not path.isfile('terabox.txt'):
         raise DirectDownloadLinkException("ERROR: terabox.txt not found")
     try:
-        session = Session()
+        session = rsession()
         res = session.request('GET', url)
         key = res.url.split('?surl=')[-1]
         jar = MozillaCookieJar('terabox.txt')
