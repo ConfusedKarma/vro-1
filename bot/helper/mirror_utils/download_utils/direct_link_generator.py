@@ -75,6 +75,8 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
+    elif is_appdrive(link):
+        return appdrive(link)
     elif any(x in link for x in ['terabox.com', 'nephobox.com']):
         return terabox(link)
     elif 'rocklinks.net' in link:
@@ -94,8 +96,6 @@ def direct_link_generator(link: str):
         return gplinks(link)
     elif 'gofile.io' in link:
         return gofile(link)
-    elif 'appdrive.pro' in link:
-        return appdrive(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
