@@ -75,7 +75,7 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
-    elif is_appdrive_link(link):
+    elif 'appdrive' in (link):
         return appdrive(link)
     elif any(x in link for x in ['terabox.com', 'nephobox.com']):
         return terabox(link)
