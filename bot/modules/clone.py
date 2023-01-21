@@ -40,7 +40,7 @@ def _clone(message, bot, multi=0):
     is_udrive = is_udrive_link(link)
     is_sharer = is_sharer_link(link)
     is_filepress = is_filepress_link(link)
-    is_appdrive = is_appdrive_link(link)
+    is_appdrive = appdrive(link)
     if (is_gdtot or is_unified or is_udrive or is_sharer or is_filepress or is_appdrive):
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
