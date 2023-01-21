@@ -815,7 +815,7 @@ def gplinks(url: str) -> str:
 	bypassed_url = client.post(domain+"links/go", data=data, headers=headers).json()["url"]
 	return bypassed_url
 
-def appdrive(url: str) -> str:
+def appdrive(url):
     try:
         cget = create_scraper().request
         raw = urlparse(url)
