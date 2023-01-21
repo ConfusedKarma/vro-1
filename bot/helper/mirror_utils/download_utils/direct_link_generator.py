@@ -94,6 +94,8 @@ def direct_link_generator(link: str):
         return gplinks(link)
     elif 'gofile.io' in link:
         return gofile(link)
+    elif 'appdrive.pro' in link:
+        return appdrive(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
@@ -812,3 +814,28 @@ def gplinks(url: str) -> str:
 	headers={"x-requested-with": "XMLHttpRequest"}
 	bypassed_url = client.post(domain+"links/go", data=data, headers=headers).json()["url"]
 	return bypassed_url
+
+def appdrive(url: str) -> str:
+    try:
+        cget = create_scraper().request
+        raw = urlparse(url)
+        res = cget('GET', url)
+        key = findall('"key",\s+"(.*?)"', res.text)[0]
+        ddl_btn = etree.HTML(res.content).xpath("//button[@id='drc']")
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if not ddl_btn:
+        raise DirectDownloadLinkException("ERROR: This link don't have direct download button")
+    headers = {
+        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryi3pOrWU7hGYfwwL4',
+        'x-token': raw.netloc,
+    }
+    data = '------WebKitFormBoundaryi3pOrWU7hGYfwwL4\r\nContent-Disposition: form-data; name="action"\r\n\r\ndirect\r\n' \
+        f'------WebKitFormBoundaryi3pOrWU7hGYfwwL4\r\nContent-Disposition: form-data; name="key"\r\n\r\n{key}\r\n' \
+        '------WebKitFormBoundaryi3pOrWU7hGYfwwL4\r\nContent-Disposition: form-data; name="action_token"\r\n\r\n\r\n' \
+        '------WebKitFormBoundaryi3pOrWU7hGYfwwL4--\r\n'
+    try:
+        res = cget("POST", url, cookies=res.cookies, headers=headers, data=data).json()
+        return res["url"]
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
