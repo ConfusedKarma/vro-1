@@ -77,7 +77,7 @@ def direct_link_generator(link: str):
         return filepress(link)
     elif is_sharer_scrape(link):
         return sharer(link)
-    elif any(x in link for x in ['terabox.com', 'nephobox.com']):
+    elif any(x in link for x in ['terabox.com', 'mirrobox.com', '4funbox.com', 'nephobox.com']):
         return terabox(link)
     elif 'rocklinks.net' in link:
         return rock(link)
