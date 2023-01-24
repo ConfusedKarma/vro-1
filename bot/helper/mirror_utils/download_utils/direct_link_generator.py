@@ -14,7 +14,7 @@ from lxml import etree
 from cfscrape import create_scraper
 import cloudscraper
 from bs4 import BeautifulSoup
-from playwright.sync_api import Playwright, sync_playwright, expect
+#from playwright.sync_api import Playwright, sync_playwright, expect
 from base64 import standard_b64encode
 from bot import LOGGER, UPTOBOX_TOKEN, CRYPT, UNIFIED_EMAIL, UNIFIED_PASS, HUBDRIVE_CRYPT, KATDRIVE_CRYPT, DRIVEFIRE_CRYPT, XSRF_TOKEN, laravel_session
 from bot.helper.telegram_helper.bot_commands import BotCommands
@@ -75,8 +75,8 @@ def direct_link_generator(link: str):
         return sharer_pw(link)
     elif is_filepress_link(link):
         return filepress(link)
-    elif 'appdrive' in (link):
-        return appdrive(link)
+    elif is_sharer_scrape(link):
+        return sharer(link)
     elif any(x in link for x in ['terabox.com', 'nephobox.com']):
         return terabox(link)
     elif 'rocklinks.net' in link:
@@ -670,41 +670,41 @@ def shareus(url):
     response = requests.get(bypassed_url).text
     return response
 
-def prun(playwright: Playwright, link:str) -> str:
-    """ filepress google drive link generator
-    By https://t.me/maverick9099
-    GitHub: https://github.com/majnurangeela"""
+#def prun(playwright: Playwright, link:str) -> str:
+    #""" filepress google drive link generator
+    #By https://t.me/maverick9099
+    #GitHub: https://github.com/majnurangeela"""
 
-    browser = playwright.chromium.launch()
-    context = browser.new_context()
+    #browser = playwright.chromium.launch()
+    #context = browser.new_context()
 
-    page = context.new_page()
-    page.goto(link)
+    #page = context.new_page()
+    #page.goto(link)
 
-    firstbtn = page.locator("xpath=//div[text()='Direct Download']/parent::button")
-    expect(firstbtn).to_be_visible()
-    firstbtn.click()
-    sleep(10)
+    #firstbtn = page.locator("xpath=//div[text()='Direct Download']/parent::button")
+    #expect(firstbtn).to_be_visible()
+    #firstbtn.click()
+    #sleep(10)
 
-    secondBtn = page.get_by_role("button", name="Download Now")
-    expect(secondBtn).to_be_visible()
-    with page.expect_navigation():
-        secondBtn.click()
+    #secondBtn = page.get_by_role("button", name="Download Now")
+    #expect(secondBtn).to_be_visible()
+    #with page.expect_navigation():
+        #secondBtn.click()
 
-    Flink = page.url
+    #Flink = page.url
     
-    context.close()
-    browser.close()
+    #context.close()
+    #browser.close()
     
-    if 'drive.google.com' in Flink:
-        return Flink
-    else:
-        raise DirectDownloadLinkException("Unable To Get Google Drive Link!")
+    #if 'drive.google.com' in Flink:
+        #return Flink
+    #else:
+        #raise DirectDownloadLinkException("Unable To Get Google Drive Link!")
 
-def filepress(link:str):
-    with sync_playwright() as playwright:
-        flink = prun(playwright, link)
-        return flink
+#def filepress(link:str):
+    #with sync_playwright() as playwright:
+        #flink = prun(playwright, link)
+        #return flink
 
 def terabox(url) -> str:
     if not path.isfile('terabox.txt'):
@@ -815,20 +815,40 @@ def gplinks(url: str) -> str:
 	bypassed_url = client.post(domain+"links/go", data=data, headers=headers).json()["url"]
 	return bypassed_url
 
-def appdrive(url):
+def filepress(url):
+    cget = create_scraper().request
     try:
-        cget = create_scraper().request
+        url = cget('GET', url).url
         raw = urlparse(url)
-        res = cget('GET', url)
-        key = findall('"key",\s+"(.*?)"', res.text)[0]
-        ddl_btn = etree.HTML(res.content).xpath("//button[@id='drc']")
+        json_data = {
+            'id': raw.path.split('/')[-1],
+            'method': 'publicDownlaod',
+            }
+        api = f'{raw.scheme}://api.{raw.hostname}/api/file/downlaod/'
+        res = cget('POST', api, headers={'Referer': f'{raw.scheme}://{raw.hostname}'}, json=json_data).json()
     except Exception as e:
         raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
-    if not ddl_btn:
+    if 'data' not in res:
+        raise DirectDownloadLinkException(f'ERROR: {res["statusText"]}')
+    return f'https://drive.google.com/uc?id={res["data"]}&export=download'
+
+def sharer(url):
+    try:
+        cget = create_scraper().request
+        url = cget('GET', url).url
+        raw = urlparse(url)
+        res = cget('GET', url)
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    key = re_findall('"key",\s+"(.*?)"', res.text)
+    if not key:
+        raise DirectDownloadLinkException("ERROR: Key not found!")
+    key = key[0]
+    if not etree.HTML(res.content).xpath("//button[@id='drc']"):
         raise DirectDownloadLinkException("ERROR: This link don't have direct download button")
     headers = {
         'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryi3pOrWU7hGYfwwL4',
-        'x-token': raw.netloc,
+        'x-token': raw.hostname,
     }
     data = '------WebKitFormBoundaryi3pOrWU7hGYfwwL4\r\nContent-Disposition: form-data; name="action"\r\n\r\ndirect\r\n' \
         f'------WebKitFormBoundaryi3pOrWU7hGYfwwL4\r\nContent-Disposition: form-data; name="key"\r\n\r\n{key}\r\n' \
@@ -836,6 +856,17 @@ def appdrive(url):
         '------WebKitFormBoundaryi3pOrWU7hGYfwwL4--\r\n'
     try:
         res = cget("POST", url, cookies=res.cookies, headers=headers, data=data).json()
-        return res["url"]
     except Exception as e:
         raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if "url" not in res:
+        raise DirectDownloadLinkException('ERROR: Drive Link not found')
+    if "drive.google.com" in res["url"]:
+        return res["url"]
+    try:
+        res = cget('GET', res["url"])
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if (drive_link := etree.HTML(res.content).xpath("//a[contains(@class,'btn')]/@href")) and "drive.google.com" in drive_link[0]:
+        return drive_link[0]
+    else:
+        raise DirectDownloadLinkException('ERROR: Drive Link not found')
