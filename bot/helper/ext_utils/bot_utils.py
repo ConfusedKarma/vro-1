@@ -248,12 +248,12 @@ def is_gdtot_link(url: str):
     return bool(url)
 
 def is_sharer_scrape(url: str):
-    url = re_match(r'https?://(filepress|filebee|appdrive|gdflix)\.\S+', url)
+    url = re_match(r'https?://(appdrive|gdflix)\.\S+', url)
     return bool(url)
 
 def is_unified_link(url: str):
     url1 = re_match(r'https?://(anidrive|driveroot|driveflix|indidrive|drivehub)\.in/\S+', url)
-    url = re_match(r'https?://(driveapp|driveace|gdflix|drivelinks|drivebit|drivesharer|drivepro)\.\S+', url)
+    url = re_match(r'https?://(driveapp|driveace|drivelinks|drivebit|drivesharer|drivepro)\.\S+', url)
     if bool(url1) == True:
         return bool(url1)
     elif bool(url) == True:
