@@ -40,7 +40,8 @@ def _clone(message, bot, multi=0):
     is_udrive = is_udrive_link(link)
     is_sharer = is_sharer_link(link)
     is_filepress = is_filepress_link(link)
-    if (is_gdtot or is_unified or is_udrive or is_sharer or is_filepress):
+    is_sharer_new = is_sharer_scraper(link)
+    if (is_gdtot or is_unified or is_udrive or is_sharer or is_filepress or is_sharer_new):
         try:
             msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
             LOGGER.info(f"Processing: {link}")
@@ -54,6 +55,8 @@ def _clone(message, bot, multi=0):
                 link = sharer_pw(link)
             if is_filepress:
                 link = filepress(link)
+            if is_sharer_new:
+                link = sharer(link)
             deleteMessage(bot, msg)
         except DirectDownloadLinkException as e:
             deleteMessage(bot, msg)
