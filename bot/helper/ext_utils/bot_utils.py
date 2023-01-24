@@ -239,17 +239,17 @@ def is_url(url: str):
 def is_gdrive_link(url: str):
     return "drive.google.com" in url
 
-def is_filepress_link(url: str):
-    url = re_match(r'https?://(filepress|filebee)\.\S+', url)
-    return bool(url)
+#def is_filepress_link(url: str):
+    #url = re_match(r'https?://(filepress|filebee)\.\S+', url)
+    #return bool(url)
 
 def is_gdtot_link(url: str):
     url = re_match(r'https?://.+\.gdtot\.\S+', url)
     return bool(url)
 
-#def is_appdrive_link(url: str):
-    #url = re_match(r'https?://.+\.appdrive\.\S+', url)
-    #return bool(url)
+def is_sharer_link(url: str):
+    url = re_match(r'https?://(filepress|filebee|appdrive|gdflix)\.\S+', url)
+    return bool(url)
 
 def is_unified_link(url: str):
     url1 = re_match(r'https?://(anidrive|driveroot|driveflix|indidrive|drivehub)\.in/\S+', url)
