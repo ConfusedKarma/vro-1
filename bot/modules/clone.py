@@ -61,18 +61,6 @@ def _clone(message, bot, multi=0):
         except DirectDownloadLinkException as e:
             deleteMessage(bot, msg)
             return sendMessage(str(e), bot, message)
-
-    is_gp = gplinks(link)
-    if is_gp:
-        try:
-            msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
-            link = gplinks(link)
-            deleteMessage(bot, msg)
-            msg = sendMessage(f"gplink_bypassed:<code>{link}</code>", bot, message) 
-        except DirectDownloadLinkException as e:
-            deleteMessage(bot, msg)
-            return sendMessage(str(e), bot, message)
-
     if is_gdrive_link(link):
         gd = GoogleDriveHelper()
         res, size, name, files = gd.helper(link)
