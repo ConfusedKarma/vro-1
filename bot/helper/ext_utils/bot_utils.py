@@ -247,7 +247,7 @@ def is_gdtot_link(url: str):
     url = re_match(r'https?://.+\.gdtot\.\S+', url)
     return bool(url)
 
-def is_sharer_scrape(url: str):
+def is_sharer_scraper(url: str):
     url = re_match(r'https?://(appdrive|gdflix)\.\S+', url)
     return bool(url)
 
