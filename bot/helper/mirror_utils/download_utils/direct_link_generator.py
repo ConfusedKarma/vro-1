@@ -671,42 +671,6 @@ def shareus(url):
     response = requests.get(bypassed_url).text
     return response
 
-#def prun(playwright: Playwright, link:str) -> str:
-    #""" filepress google drive link generator
-    #By https://t.me/maverick9099
-    #GitHub: https://github.com/majnurangeela"""
-
-    #browser = playwright.chromium.launch()
-    #context = browser.new_context()
-
-    #page = context.new_page()
-    #page.goto(link)
-
-    #firstbtn = page.locator("xpath=//div[text()='Direct Download']/parent::button")
-    #expect(firstbtn).to_be_visible()
-    #firstbtn.click()
-    #sleep(10)
-
-    #secondBtn = page.get_by_role("button", name="Download Now")
-    #expect(secondBtn).to_be_visible()
-    #with page.expect_navigation():
-        #secondBtn.click()
-
-    #Flink = page.url
-    
-    #context.close()
-    #browser.close()
-    
-    #if 'drive.google.com' in Flink:
-        #return Flink
-    #else:
-        #raise DirectDownloadLinkException("Unable To Get Google Drive Link!")
-
-#def filepress(link:str):
-    #with sync_playwright() as playwright:
-        #flink = prun(playwright, link)
-        #return flink
-
 def terabox(url) -> str:
     if not path.isfile('terabox.txt'):
         raise DirectDownloadLinkException("ERROR: terabox.txt not found")
@@ -901,8 +865,9 @@ def xpshort(url):
     sleep(8)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
-        return r.json()['url']
-    return xpshort
-    except: return "Something went wrong :("
+        k_url = return r.json()['url']
+    return k_url
+    else:
+        raise DirectDownloadLinkException('ERROR')
 
 #print(xpshort)
