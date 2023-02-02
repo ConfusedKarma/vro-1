@@ -902,6 +902,7 @@ def xpshort(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
         return r.json()['url']
+    return xpshort
     except: return "Something went wrong :("
 
-print(xpshort)
+#print(xpshort)
