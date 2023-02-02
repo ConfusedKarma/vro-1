@@ -898,7 +898,7 @@ def xpshort(url):
 
     h = { "x-requested-with": "XMLHttpRequest" }
     
-    time.sleep(8)
+    sleep(8)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
         return r.json()['url']
