@@ -866,7 +866,6 @@ def xpshort(url):
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
         return r.json()['url']
-    else:
-        raise DirectDownloadLinkException('ERROR')
+    except: return "Something went wrong :("
 
 #print(xpshort)
