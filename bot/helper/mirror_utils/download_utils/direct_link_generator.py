@@ -865,8 +865,7 @@ def xpshort(url):
     sleep(8)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
-        k_url = r.json()['url']
-    return k_url
+        return r.json()['url']
     else:
         raise DirectDownloadLinkException('ERROR')
 
