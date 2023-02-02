@@ -904,4 +904,4 @@ def xpshort(url):
         return r.json()['url']
     except: return "Something went wrong :("
 
-#print(xpshort(url))
+print(xpshort)
