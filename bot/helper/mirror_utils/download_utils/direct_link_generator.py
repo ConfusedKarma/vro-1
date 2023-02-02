@@ -14,7 +14,6 @@ from lxml import etree
 from cfscrape import create_scraper
 import cloudscraper
 from bs4 import BeautifulSoup
-#from playwright.sync_api import Playwright, sync_playwright, expect
 from base64 import standard_b64encode
 from bot import LOGGER, UPTOBOX_TOKEN, CRYPT, UNIFIED_EMAIL, UNIFIED_PASS, HUBDRIVE_CRYPT, KATDRIVE_CRYPT, DRIVEFIRE_CRYPT, XSRF_TOKEN, laravel_session
 from bot.helper.telegram_helper.bot_commands import BotCommands
@@ -96,6 +95,8 @@ def direct_link_generator(link: str):
         return gplinks(link)
     elif 'gofile.io' in link:
         return gofile(link)
+    elif 'xpshort.com' in link or 'techymozo.com' in link:
+        return xpshort(link)
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
@@ -869,3 +870,38 @@ def sharer(url):
         return drive_link[0]
     else:
         raise DirectDownloadLinkException('ERROR: Drive Link not found')
+
+def xpshort(url):
+     
+    client = requests.session()
+    
+    
+    DOMAIN = "https://push.bdnewsx.com"
+
+    url = url[:-1] if url[-1] == '/' else url
+
+    code = url.split("/")[-1]
+    
+    final_url = f"{DOMAIN}/{code}"
+    
+    ref = "https://techrfour.com/"
+    
+    h = {"referer": ref}
+  
+    resp = client.get(final_url,headers=h)
+    
+    soup = BeautifulSoup(resp.content, "html.parser")
+    
+    inputs = soup.find_all("input")
+   
+    data = { input.get('name'): input.get('value') for input in inputs }
+
+    h = { "x-requested-with": "XMLHttpRequest" }
+    
+    time.sleep(8)
+    r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
+    try:
+        return r.json()['url']
+    except: return "Something went wrong :("
+
+print(xpshort(url))
