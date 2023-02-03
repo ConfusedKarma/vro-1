@@ -115,17 +115,6 @@ def _clone(message, bot, multi=0):
     else:
         sendMessage('Send Gdrive or GDToT/AppDrive/DriveApp/GDFlix/DriveBit/DriveLinks/DrivePro/DriveAce/DriveSharer/HubDrive/DriveHub/KatDrive/Kolop/DriveFire/SharerPw link along with command or by replying to the link by command', bot, message)
 
-    is_xp = xpshort(link)
-    if is_xp:
-        try:
-            msg = sendMessage(f"Processing: <code>{link}</code>", bot, message)
-            link = xpshort(link)
-            deleteMessage(bot, msg)
-            msg = sendMessage(f"Bypassed:<code>{link}</code>", bot, message) 
-        except DirectDownloadLinkException as e:
-            deleteMessage(bot, msg)
-            return sendMessage(str(e), bot, message)
-
 def cloneNode(update, context):
     _clone(update.message, context.bot)
 
