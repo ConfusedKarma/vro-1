@@ -1,4 +1,4 @@
-from bot import vro
+from bot import vro, OWNER_ID
 
 CUSTOM_CMD = ["/", "!"]
 
@@ -50,3 +50,12 @@ async def jsonify(_, message):
             ),
         )
         os.remove("json.text")
+
+
+@vro.on_message(filters.incoming & filters.private)
+async def frwd(bot, message):
+  try:
+    USER_ID = message.from_user.mention
+    await bot.forward_message(message.from_user.id, MY_ID)
+  except:
+    bot.send_message(OWNER_ID, f"{USER_ID} is spamming me! I am not able to forward his messages")
