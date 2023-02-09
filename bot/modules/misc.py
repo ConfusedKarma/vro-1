@@ -56,6 +56,6 @@ async def jsonify(_, message):
 async def frwd(bot, message):
   try:
     USER_ID = message.from_user.mention
-    await bot.forward_message(message.from_user.id, MY_ID)
+    await bot.forward_message(message.from_user.id, OWNER_ID)
   except:
     bot.send_message(OWNER_ID, f"{USER_ID} is spamming me! I am not able to forward his messages")
