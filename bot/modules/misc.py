@@ -53,9 +53,9 @@ async def jsonify(_, message):
 
 
 @vro.on_message(filters.incoming & filters.private)
-async def frwd(bot, message):
+async def frwd(message):
   try:
     USER_ID = message.from_user.mention
-    await bot.forward_message(message.from_user.id, OWNER_ID)
+    await vro.forward_message(message.from_user.id, OWNER_ID)
   except:
-    bot.send_message(OWNER_ID, f"{USER_ID} is spamming me! I am not able to forward his messages")
+    vro.send_message(OWNER_ID, f"{USER_ID} is spamming me! I am not able to forward his messages")
