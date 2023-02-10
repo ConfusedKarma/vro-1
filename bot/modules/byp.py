@@ -12,3 +12,11 @@ async def byp(bot, update):
     message = await update.reply_text(
         text=bsdk, disable_web_page_preview=True, quote=True
     )
+
+@vro.on_message(filters.command("t", CUSTOM_CMD) & filters.regex(r"https?://[^\s]+") & filters.user(OWNER_ID))
+async def byp(bot, update):
+    url = update.matches[0].group(0)
+    bsdk = terabox(url)
+    message = await update.reply_text(
+        text=bsdk, disable_web_page_preview=True, quote=True
+    )
