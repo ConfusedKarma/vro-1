@@ -422,25 +422,6 @@ def _mirror(bot, message, isZip=False, extract=False, isQbit=False, isLeech=Fals
 
     if is_gdrive_link(link):
         if not isZip and not extract and not isLeech:
-        gd = GoogleDriveHelper()
-        res, size, name, files = gd.helper(link)
-        if res != "":
-            return sendMessage(res, bot, message)
-            return
-        if STOP_DUPLICATE:
-            LOGGER.info('Checking File/Folder if already in Drive...')
-            smsg, button = gd.drive_list(name, True, True)
-            if smsg:
-                msg3 = "File/Folder is already available in Drive.\nHere are the search results:"
-                return sendMarkup(msg3, bot, message, button)
-                return
-        if files <= 10:
-            msg = sendMessage(f"Cloning: <code>{link}</code>", context.bot, update)
-            result, button = gd.clone(link)
-            deleteMessage(context.bot, msg)
-
-    if is_gdrive_link(link):
-        if not isZip and not extract and not isLeech:
             gmsg = f"Use /{BotCommands.CloneCommand} to clone Google Drive file/folder\n\n"
             gmsg += f"Use /{BotCommands.ZipMirrorCommand} to make zip of Google Drive folder\n\n"
             gmsg += f"Use /{BotCommands.UnzipMirrorCommand} to extracts Google Drive archive file"
