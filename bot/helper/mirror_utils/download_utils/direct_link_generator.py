@@ -786,8 +786,6 @@ def gplinks(url: str):
  bypassed_url = client.post(domain+"links/go", data=data, headers=headers).json()["url"]
  return bypassed_url
 
-print(gplinks_bypass(url))
-
 def filepress(url):
     cget = create_scraper().request
     try:
