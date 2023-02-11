@@ -608,12 +608,12 @@ def sharer_pw(url: str)-> str:
             finalMsg = BeautifulSoup(drive_link["message"], "lxml").text
             raise DirectDownloadLinkException(finalMsg)
 
-def rock(url: str) -> str:
+def rock(url):
     client = cloudscraper.create_scraper(allow_brotli=False)
     if 'rocklinks.net' in url:
-        DOMAIN = "https://blog.disheye.com"
+        DOMAIN = "https://rl.techysuccess.com"
     else:
-        DOMAIN = "https://go.techyjeeshan.xyz"
+        DOMAIN = "https://rocklinks.net"
 
     url = url[:-1] if url[-1] == '/' else url
 
@@ -621,15 +621,21 @@ def rock(url: str) -> str:
     if 'rocklinks.net' in url:
         final_url = f"{DOMAIN}/{code}?quelle=" 
     else:
-        final_url = f"{DOMAIN}/{code}?quelle="
+        final_url = f"{DOMAIN}/{code}"
+    ref = "https://disheye.com/"
+    
+    h = {"referer": ref}
 
-    resp = client.get(final_url)
+    resp = client.get(final_url,headers=h)
     soup = BeautifulSoup(resp.content, "html.parser")
     
     try: inputs = soup.find(id="go-link").find_all(name="input")
-    except: return "Incorrect Link"    
+    except: return "Incorrect Link"
+    
     data = { input.get('name'): input.get('value') for input in inputs }
-    h = { "x-requested-with": "XMLHttpRequest" } 
+
+    h = { "x-requested-with": "XMLHttpRequest" }
+    
     sleep(10)
     r = client.post(f"{DOMAIN}/links/go", data=data, headers=h)
     try:
