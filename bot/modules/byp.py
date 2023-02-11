@@ -31,3 +31,11 @@ async def byp(bot, update):
     message = await update.reply_text(
         text=bsdk, disable_web_page_preview=True, quote=True
     )
+@vro.on_message(filters.command("gp", CUSTOM_CMD) & filters.regex(r"https?://[^\s]+"))
+@authorized_chats
+async def byp(bot, update):
+    url = update.matches[0].group(0)
+    bsdk = gplinks(url)
+    message = await update.reply_text(
+        text=bsdk, disable_web_page_preview=True, quote=True
+    )
