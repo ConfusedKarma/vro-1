@@ -129,7 +129,7 @@ async def aexec(code, client, message):
     return await locals()["__aexec"](client, message)
 
 
-def extract_user(message, Message) -> Union[int, str]:
+def extract_user(message: Message) -> Union[int, str]:
     """extracts the user from a message"""
     user_id = None
     user_first_name = None
