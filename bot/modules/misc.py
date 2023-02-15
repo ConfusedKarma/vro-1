@@ -8,7 +8,7 @@ import io
 import sys
 import traceback
 
-from pyrogram import Client, filters, enums, Message
+from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from bot.helper.ext_utils.bot_utils import authorized_chats
 
