@@ -283,21 +283,17 @@ async def who_is(client, message):
         local_user_photo = await client.download_media(
             message=chat_photo.big_file_id
         )
-        reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
             photo=local_user_photo,
             quote=True,
-            reply_markup=reply_markup,
             caption=message_out_str,
             parse_mode=enums.ParseMode.HTML,
             disable_notification=True
         )
         os.remove(local_user_photo)
     else:
-        reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_text(
             text=message_out_str,
-            reply_markup=reply_markup,
             quote=True,
             parse_mode=enums.ParseMode.HTML,
             disable_notification=True
