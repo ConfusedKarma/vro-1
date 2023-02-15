@@ -120,7 +120,7 @@ async def aexec(code, client, message):
     return await locals()["__aexec"](client, message)
 
 
-def extract_user(message) -> Union[int, str]:
+def extract_user(message, Message) -> Union[int, str]:
     """extracts the user from a message"""
     user_id = None
     user_first_name = None
@@ -186,6 +186,8 @@ def get_file_id(msg: Message):
                 return obj
 
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
+from pyrogram.types import Message
+from typing import Union
 import time
 from datetime import datetime
 import logging
