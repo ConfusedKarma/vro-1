@@ -12,6 +12,15 @@ from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from bot.helper.ext_utils.bot_utils import authorized_chats
 
+from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
+from pyrogram.types import Message
+from typing import Union
+import time
+from datetime import datetime
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
 # View Structure Telegram Message As JSON
 @vro.on_message(filters.command(["json"], CUSTOM_CMD))
 async def jsonify(_, message):
@@ -184,15 +193,6 @@ def get_file_id(msg: Message):
             if obj:
                 setattr(obj, "message_type", message_type)
                 return obj
-
-from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
-from pyrogram.types import Message
-from typing import Union
-import time
-from datetime import datetime
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
 
 @vro.on_message(filters.command('id'))
 async def showid(client, message):
