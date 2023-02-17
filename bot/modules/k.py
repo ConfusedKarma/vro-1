@@ -52,7 +52,7 @@ async def bypass(_, msg):
     m = msg.text.split()
     
     if len(m)<2:
-        await msg.reply_text("Format: /bypass <url> <name only if required>", parse_mode="markdown")
+        await msg.reply_text("Format: /bypass <url> <name only if required>")
         return
     if len(m)>2:
         nam = m[2]
@@ -78,7 +78,7 @@ async def gdtotbypass(_, msg):
     m = msg.text.split()
     
     if len(m)<3:
-        await msg.reply_text("Format: /bypass <url> <gdtot crypt>", parse_mode="markdown")
+        await msg.reply_text("Format: /bypass <url> <gdtot crypt>")
         return
     
     url = m[1]
@@ -134,7 +134,7 @@ async def pastewo(_, msg):
     else:
         m = msg.text.split()
         if len(m)<2:
-            await msg.reply_text("Format: /paste <reply_to_msg/text>", parse_mode="markdown")
+            await msg.reply_text("Format: /paste <reply_to_msg/text>")
         text = m[1]
     
     try:
