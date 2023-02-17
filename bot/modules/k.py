@@ -144,6 +144,6 @@ async def pastewo(_, msg):
         LOGGER.info(e)
         return
         
-    await msg.reply_text(f"Pasted to **Spacebin**: {pasted}")
+    await msg.reply_text(f"Pasted to **Spacebin**: {pasted}", disable_web_page_preview=True)
     await status_msg.delete()
     return 
