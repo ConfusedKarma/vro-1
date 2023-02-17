@@ -11,6 +11,8 @@ import requests
 from pyrogram import filters
 import PyBypass as bypasser
 
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 from bot.helper.ext_utils.bot_utils import authorized_chats
 
 @new_thread
@@ -138,12 +140,16 @@ async def pastewo(_, msg):
         text = m[1]
     
     try:
-        pasted = paste(text)
+        x = paste(text)
     except Exception as e:
         await msg.reply_text(f"Some error occurred, probably API down.\nERROR: {e}")
         LOGGER.info(e)
         return
         
-    await msg.reply_text(f"Pasted to **Spacebin**: {pasted}", disable_web_page_preview=True)
-    await status_msg.delete()
-    return 
+    await msg.reply(x,
+                      reply_markup=InlineKeyboardMarkup(
+                          [[InlineKeyboardButton("Open", url=x)]]),
+                      disable_web_page_preview=True)
+
+    else:
+        message.reply_text("Reply to a message!")
