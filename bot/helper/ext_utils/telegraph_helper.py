@@ -78,4 +78,4 @@ class TelegraphHelper:
         return
 
 
-telegraph=TelegraphHelper('SinghMirrorBot', 't.me/Telegram')
+telegraph=TelegraphHelper('SinghMirrorBot', 'https://t.me/Telegram')
