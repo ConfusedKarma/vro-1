@@ -31,3 +31,4 @@ tgCrypto
 urllib3
 yt-dlp
 cloudscraper
+PyBypass
