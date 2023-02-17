@@ -152,4 +152,4 @@ async def pastewo(_, msg):
                       disable_web_page_preview=True)
 
     else:
-        message.reply_text("Reply to a message!")
+        msg.reply_text("Reply to a message or\file!")
