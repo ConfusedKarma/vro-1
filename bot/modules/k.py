@@ -145,10 +145,10 @@ async def pastewo(_, msg):
         await msg.reply_text(f"Some error occurred, probably API down.\nERROR: {e}")
         LOGGER.info(e)
         return
-        
-    await msg.reply(x,
+        await msg.reply(x,
                       reply_markup=InlineKeyboardMarkup(
                           [[InlineKeyboardButton("Open", url=x)]]),
                       disable_web_page_preview=True)
+
     else:
-        msg.reply_text("Reply to a message or\file!")
+        msg.reply_text("Reply to a message or\nfile!")
