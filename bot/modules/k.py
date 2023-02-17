@@ -52,7 +52,7 @@ async def bypass(_, msg):
     m = msg.text.split()
     
     if len(m)<2:
-        await msg.reply_text("Format: /bypass <url> <name only if required>")
+        await msg.reply_text("/bypass <url> <name only if required>")
         return
     if len(m)>2:
         nam = m[2]
@@ -78,7 +78,7 @@ async def gdtotbypass(_, msg):
     m = msg.text.split()
     
     if len(m)<3:
-        await msg.reply_text("Format: /bypass <url> <gdtot crypt>")
+        await msg.reply_text("Format: /gdtot <url> <gdtot crypt>")
         return
     
     url = m[1]
@@ -144,6 +144,6 @@ async def pastewo(_, msg):
         LOGGER.info(e)
         return
         
-    await msg.reply_text(f"Pasted to **Spacebin**: `{pasted}`")
+    await msg.reply_text(f"Pasted to **Spacebin**: {pasted}")
     await status_msg.delete()
     return 
