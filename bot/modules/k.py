@@ -46,7 +46,7 @@ permission_handler = CommandHandler(BotCommands.PermissionCommand, permissionNod
 dispatcher.add_handler(permission_handler)
 
 @vro.on_message(filters.command('bypass'))
-authorized_chats
+@authorized_chats
 async def bypass(_, msg):
     nam = None
     m = msg.text.split()
