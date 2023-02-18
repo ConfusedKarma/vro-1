@@ -133,7 +133,6 @@ def uptobox(url: str) -> str:
         return link[0]
     try:
         file_id = re_findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
-        if UPTOBOX_TOKEN := ['UPTOBOX_TOKEN']:
             file_link = f'https://uptobox.com/api/link?token={UPTOBOX_TOKEN}&file_code={file_id}'
         else:
             file_link = f'https://uptobox.com/api/link?file_code={file_id}'
