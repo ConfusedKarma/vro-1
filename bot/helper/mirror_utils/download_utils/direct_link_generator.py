@@ -124,25 +124,37 @@ def yandex_disk(url: str) -> str:
 
 def uptobox(url: str) -> str:
     """ Uptobox direct link generator
-    based on https://github.com/jovanzers/WinTenCermin """
+    based on https://github.com/jovanzers/WinTenCermin and https://github.com/sinoobie/noobie-mirror """
     try:
         link = re_findall(r'\bhttps?://.*uptobox\.com\S+', url)[0]
     except IndexError:
-        raise DirectDownloadLinkException("No Uptobox links found\n")
-    if UPTOBOX_TOKEN is None:
-        LOGGER.error('UPTOBOX_TOKEN not provided!')
-        dl_url = link
+        raise DirectDownloadLinkException("No Uptobox links found")
+    if link := re_findall(r'\bhttps?://.*\.uptobox\.com/dl\S+', url):
+        return link[0]
+    try:
+        file_id = re_findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
+        if UPTOBOX_TOKEN := ['UPTOBOX_TOKEN']:
+            file_link = f'https://uptobox.com/api/link?token={UPTOBOX_TOKEN}&file_code={file_id}'
+        else:
+            file_link = f'https://uptobox.com/api/link?file_code={file_id}'
+        res = request('get', file_link).json()
+    except Exception as e:
+        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
+    if res['statusCode'] == 0:
+        return res['data']['dlLink']
+    elif res['statusCode'] == 16:
+        sleep(1)
+        waiting_token = res["data"]["waitingToken"]
+        sleep(res["data"]["waiting"])
+    elif res['statusCode'] == 39:
+        raise DirectDownloadLinkException(f"ERROR: Uptobox is being limited please wait {get_readable_time(res['data']['waiting'])}")
     else:
-        try:
-            link = re_findall(r'\bhttp?://.*uptobox\.com/dl\S+', url)[0]
-            dl_url = link
-        except:
-            file_id = re_findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
-            file_link = 'https://uptobox.com/api/link?token=%s&file_code=%s' % (UPTOBOX_TOKEN, file_id)
-            req = rget(file_link)
-            result = req.json()
-            dl_url = result['data']['dlLink']
-    return dl_url
+        raise DirectDownloadLinkException(f"ERROR: {res['message']}")
+    try:
+        res = request('get', f"{file_link}&waitingToken={waiting_token}").json()
+        return res['data']['dlLink']
+    except Exception as e:
+        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
 
 def mediafire(url: str) -> str:
     """ MediaFire direct link generator """
