@@ -129,31 +129,34 @@ def uptobox(url: str) -> str:
         link = re_findall(r'\bhttps?://.*uptobox\.com\S+', url)[0]
     except IndexError:
         raise DirectDownloadLinkException("No Uptobox links found")
-    if link := re_findall(r'\bhttps?://.*\.uptobox\.com/dl\S+', url):
-        return link[0]
-    try:
-        file_id = re_findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
-            file_link = f'https://uptobox.com/api/link?token={UPTOBOX_TOKEN}&file_code={file_id}'
-        else:
-            file_link = f'https://uptobox.com/api/link?file_code={file_id}'
-        res = request('get', file_link).json()
-    except Exception as e:
-        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
-    if res['statusCode'] == 0:
-        return res['data']['dlLink']
-    elif res['statusCode'] == 16:
-        sleep(1)
-        waiting_token = res["data"]["waitingToken"]
-        sleep(res["data"]["waiting"])
-    elif res['statusCode'] == 39:
-        raise DirectDownloadLinkException(f"ERROR: Uptobox is being limited please wait {get_readable_time(res['data']['waiting'])}")
+    if UPTOBOX_TOKEN is None:
+        LOGGER.error('UPTOBOX_TOKEN not provided!')
+        dl_url = link
     else:
-        raise DirectDownloadLinkException(f"ERROR: {res['message']}")
-    try:
-        res = request('get', f"{file_link}&waitingToken={waiting_token}").json()
-        return res['data']['dlLink']
-    except Exception as e:
-        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
+        try:
+            link = re_findall(r'\bhttp?://.*uptobox\.com/dl\S+', url)[0]
+            dl_url = link
+        except:
+            file_id = re_findall(r'\bhttps?://.*uptobox\.com/(\w+)', url)[0]
+            file_link = f'https://uptobox.com/api/link?token={UPTOBOX_TOKEN}&file_code={file_id}'
+            req = rget(file_link)
+            result = req.json()
+            if result['message'].lower() == 'success':
+                dl_url = result['data']['dlLink']
+            elif result['message'].lower() == 'waiting needed':
+                waiting_time = result["data"]["waiting"] + 1
+                waiting_token = result["data"]["waitingToken"]
+                sleep(waiting_time)
+                req2 = rget(f"{file_link}&waitingToken={waiting_token}")
+                result2 = req2.json()
+                dl_url = result2['data']['dlLink']
+            elif result['message'].lower() == 'you need to wait before requesting a new download link':
+                cooldown = divmod(result['data']['waiting'], 60)
+                raise DirectDownloadLinkException(f"ERROR: Uptobox is being limited please wait {cooldown[0]} min {cooldown[1]} sec.")
+            else:
+                LOGGER.info(f"UPTOBOX_ERROR: {result}")
+                raise DirectDownloadLinkException(f"ERROR: {result['message']}")
+    return dl_url
 
 def mediafire(url: str) -> str:
     """ MediaFire direct link generator """
