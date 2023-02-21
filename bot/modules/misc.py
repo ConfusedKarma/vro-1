@@ -299,3 +299,32 @@ async def who_is(client, message):
             disable_notification=True
         )
     await status_message.delete()
+
+openai.api_key = "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"
+import openai
+import json
+
+@vro.on_message(filters.command(["gpt"]))
+@authorized_chats
+def gpt_handler(client, message):
+    myprompt = message.text.split(None, 1)[1]
+    message.reply('🤖 ChatGPT generating answer...')
+    try:
+        rawresponse = openai.Completion.create(
+          model="text-davinci-003",
+          prompt=myprompt,
+          temperature=0,
+          max_tokens=60,
+          top_p=1,
+          frequency_penalty=0,
+          presence_penalty=0
+       )
+        jsstr = json.dumps(rawresponse)
+        response_dict = json.loads(jsstr)
+        response = response_dict.get("choices", [{"text": "Error"}])[0].get("text")
+        if response:
+            message.reply(f'{response}\n\n Your request for ChatGPT: {myprompt}')
+        else:
+            message.reply(f'🚫 Error found!\nResponse from API does not contain text property: {response_dict}')
+    except Exception as e:
+        message.reply('🚫 Error found!\nError: %s' % e)
