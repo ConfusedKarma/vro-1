@@ -1,3 +1,4 @@
+import os
 from logging import getLogger, FileHandler, StreamHandler, INFO, basicConfig, error as log_error, info as log_info, warning as log_warning
 from socket import setdefaulttimeout
 from faulthandler import enable as faulthandler_enable
@@ -146,6 +147,20 @@ try:
 except:
     log_error("One or more env variables missing! Exiting now")
     exit(1)
+
+if os.path.exists("log_channel.txt"):
+    with open("logs_chat.txt", "r+") as f:
+        lines = f.readlines()
+        for line in lines:
+            LOG_CHANNEL.add(int(line.split()[0]))
+try:
+    achats = getConfig("LOG_CHANNEL")
+    achats = achats.split(" ")
+    for chats in achats:
+        LOG_CHANNEL.add(int(chats))
+except:
+    LOGGER.info('Log Channel Details not provided!')
+
 
 try:
     IS_PREMIUM_USER = False
