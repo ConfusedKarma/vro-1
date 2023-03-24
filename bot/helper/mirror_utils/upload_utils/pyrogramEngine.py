@@ -5,7 +5,8 @@ from pyrogram.errors import FloodWait, RPCError
 from PIL import Image
 from threading import RLock
 
-from bot import DOWNLOAD_DIR, AS_DOCUMENT, AS_DOC_USERS, AS_MEDIA_USERS, CUSTOM_FILENAME, EXTENSION_FILTER, app
+from bot import DOWNLOAD_DIR, AS_DOCUMENT, AS_DOC_USERS, AS_MEDIA_USERS, CUSTOM_FILENAME, \
+                 EXTENSION_FILTER, app, LOG_CHANNEL
 from bot.helper.ext_utils.fs_utils import take_ss, get_media_info, get_path_size
 from bot.helper.ext_utils.bot_utils import get_readable_file_size
 
@@ -104,6 +105,12 @@ class TgUploader:
                                                                   supports_streaming=True,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
+                    if LOG_CHANNEL:
+                        try:
+                            for i in LOG_CHANNEL:
+                                app.send_video(chat_id=i, video=self.__sent_msg.video.file_id, caption=cap_mono)
+                        except Exception as err:
+                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(AUDIO_SUFFIXES):
                     duration , artist, title = get_media_info(up_path)
                     self.__sent_msg = self.__sent_msg.reply_audio(audio=up_path,
@@ -115,12 +122,24 @@ class TgUploader:
                                                                   thumb=thumb,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
+                    if LOG_CHANNEL:
+                        try:
+                            for i in LOG_CHANNEL:
+                                app.send_audio(chat_id=i, audio=self.__sent_msg.audio.file_id, caption=cap_mono)
+                        except Exception as err:
+                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(IMAGE_SUFFIXES):
                     self.__sent_msg = self.__sent_msg.reply_photo(photo=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
+                    if LOG_CHANNEL:
+                        try:
+                            for i in LOG_CHANNEL:
+                                app.send_photo(chat_id=i, photo=self.__sent_msg.photo.file_id, caption=cap_mono)
+                        except Exception as err:
+                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 else:
                     notMedia = True
             if self.__as_doc or notMedia:
@@ -136,6 +155,12 @@ class TgUploader:
                                                                  caption=cap_mono,
                                                                  disable_notification=True,
                                                                  progress=self.__upload_progress)
+                if LOG_CHANNEL:
+                    try:
+                        for i in LOG_CHANNEL:
+                            app.send_document(chat_id=i, document=self.__sent_msg.document.file_id, caption=cap_mono)
+                    except Exception as err:
+                        LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
         except FloodWait as f:
             LOGGER.warning(str(f))
             sleep(f.value)
