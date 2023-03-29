@@ -95,7 +95,7 @@ class TgUploader:
                         new_path = ospath.join(dirpath, file_)
                         osrename(up_path, new_path)
                         up_path = new_path
-                    self.__sent_msg = self.__sent_msg.reply_video(video=up_path,
+                    #self.__sent_msg = self.__sent_msg.reply_video(video=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   duration=duration,
@@ -113,7 +113,7 @@ class TgUploader:
                             LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(AUDIO_SUFFIXES):
                     duration , artist, title = get_media_info(up_path)
-                    self.__sent_msg = self.__sent_msg.reply_audio(audio=up_path,
+                    #self.__sent_msg = self.__sent_msg.reply_audio(audio=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   duration=duration,
@@ -129,7 +129,7 @@ class TgUploader:
                         except Exception as err:
                             LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(IMAGE_SUFFIXES):
-                    self.__sent_msg = self.__sent_msg.reply_photo(photo=up_path,
+                    #self.__sent_msg = self.__sent_msg.reply_photo(photo=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   disable_notification=True,
@@ -149,7 +149,7 @@ class TgUploader:
                         if self.__thumb is None and thumb is not None and ospath.lexists(thumb):
                             osremove(thumb)
                         return
-                self.__sent_msg = self.__sent_msg.reply_document(document=up_path,
+                #self.__sent_msg = self.__sent_msg.reply_document(document=up_path,
                                                                  quote=True,
                                                                  thumb=thumb,
                                                                  caption=cap_mono,
