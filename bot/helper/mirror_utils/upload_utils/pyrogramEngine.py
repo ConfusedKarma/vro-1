@@ -164,7 +164,7 @@ class TgUploader:
                 #if LOG_CHANNEL:
                     #try:
                         #for i in LOG_CHANNEL:
-                            $app.send_document(chat_id=i, document=self.__sent_msg.document.file_id, caption=cap_mono)
+                            #app.send_document(chat_id=i, document=self.__sent_msg.document.file_id, caption=cap_mono)
                     #except Exception as err:
                         #LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
         except FloodWait as f:
