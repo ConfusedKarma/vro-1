@@ -62,6 +62,12 @@ class TgUploader:
         self.__listener.onUploadComplete(None, size, self.__msgs_dict, self.__total_files, self.__corrupted, self.name)
 
     def __upload_file(self, up_path, file_, dirpath):
+        if LOG_CHANNEL:
+            set = LOG_CHANNEL.copy()
+            setstr = str(set)[1:-1]
+            LOG_CHANNEL = int(setstr)
+            leechchat = LOG_CHANNEL
+        else: leechchat = self.__listener.message.chat.id
         if CUSTOM_FILENAME is not None:
             cap_mono = f"{CUSTOM_FILENAME} <code>{file_}</code>"
             file_ = f"{CUSTOM_FILENAME} {file_}"
@@ -95,7 +101,7 @@ class TgUploader:
                         new_path = ospath.join(dirpath, file_)
                         osrename(up_path, new_path)
                         up_path = new_path
-                    self.__sent_msg = self.__sent_msg.reply_video(video=up_path,
+                    self.__sent_msg = self.__sent_msg.reply_video(chat_id=leechchat, video=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   duration=duration,
@@ -105,15 +111,15 @@ class TgUploader:
                                                                   supports_streaming=True,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
-                    if LOG_CHANNEL:
-                        try:
-                            for i in LOG_CHANNEL:
-                                app.send_video(chat_id=i, video=self.__sent_msg.video.file_id, caption=cap_mono)
-                        except Exception as err:
-                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
+                    #if LOG_CHANNEL:
+                        #try:
+                            #for i in LOG_CHANNEL:
+                                #app.send_video(chat_id=i, video=self.__sent_msg.video.file_id, caption=cap_mono)
+                        #except Exception as err:
+                            #LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(AUDIO_SUFFIXES):
                     duration , artist, title = get_media_info(up_path)
-                    self.__sent_msg = self.__sent_msg.reply_audio(audio=up_path,
+                    self.__sent_msg = self.__sent_msg.reply_audio(chat_id=leechchat, audio=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   duration=duration,
@@ -122,24 +128,24 @@ class TgUploader:
                                                                   thumb=thumb,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
-                    if LOG_CHANNEL:
-                        try:
-                            for i in LOG_CHANNEL:
-                                app.send_audio(chat_id=i, audio=self.__sent_msg.audio.file_id, caption=cap_mono)
-                        except Exception as err:
-                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
+                    #if LOG_CHANNEL:
+                        #try:
+                            #for i in LOG_CHANNEL:
+                                #app.send_audio(chat_id=i, audio=self.__sent_msg.audio.file_id, caption=cap_mono)
+                        #except Exception as err:
+                            #LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 elif file_.upper().endswith(IMAGE_SUFFIXES):
-                    self.__sent_msg = self.__sent_msg.reply_photo(photo=up_path,
+                    self.__sent_msg = self.__sent_msg.reply_photo(chat_id=leechchat, photo=up_path,
                                                                   quote=True,
                                                                   caption=cap_mono,
                                                                   disable_notification=True,
                                                                   progress=self.__upload_progress)
-                    if LOG_CHANNEL:
-                        try:
-                            for i in LOG_CHANNEL:
-                                app.send_photo(chat_id=i, photo=self.__sent_msg.photo.file_id, caption=cap_mono)
-                        except Exception as err:
-                            LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
+                    #if LOG_CHANNEL:
+                        #try:
+                            #for i in LOG_CHANNEL:
+                                #app.send_photo(chat_id=i, photo=self.__sent_msg.photo.file_id, caption=cap_mono)
+                        #except Exception as err:
+                            #LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
                 else:
                     notMedia = True
             if self.__as_doc or notMedia:
@@ -149,18 +155,18 @@ class TgUploader:
                         if self.__thumb is None and thumb is not None and ospath.lexists(thumb):
                             osremove(thumb)
                         return
-                self.__sent_msg = self.__sent_msg.reply_document(document=up_path,
-                                                                 quote=True,
+                self.__sent_msg = self.__sent_msg.reply_document(chat_id=leechchat, document=up_path,
+                                                                  quote=True,
                                                                  thumb=thumb,
                                                                  caption=cap_mono,
                                                                  disable_notification=True,
                                                                  progress=self.__upload_progress)
-                if LOG_CHANNEL:
-                    try:
-                        for i in LOG_CHANNEL:
-                            app.send_document(chat_id=i, document=self.__sent_msg.document.file_id, caption=cap_mono)
-                    except Exception as err:
-                        LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
+                #if LOG_CHANNEL:
+                    #try:
+                        #for i in LOG_CHANNEL:
+                            $app.send_document(chat_id=i, document=self.__sent_msg.document.file_id, caption=cap_mono)
+                    #except Exception as err:
+                        #LOGGER.warning(f"🚫🚫Failed to log to channel🚫🚫:\n{err}")
         except FloodWait as f:
             LOGGER.warning(str(f))
             sleep(f.value)
