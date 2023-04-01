@@ -788,7 +788,7 @@ def gplinks(url: str):
  inputs = soup.find(id="go-link").find_all(name="input")
  data = { input.get('name'): input.get('value') for input in inputs }
     
- sleep(5)
+ sleep(10)
  headers={"x-requested-with": "XMLHttpRequest"}
  bypassed_url = client.post(domain+"links/go", data=data, headers=headers).json()["url"]
  return bypassed_url
