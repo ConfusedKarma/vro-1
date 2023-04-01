@@ -712,23 +712,22 @@ def terabox(url) -> str:
         raise DirectDownloadLinkException("ERROR: Can't download folder")
     return result['dlink']
 
-def mdisk(url: str) -> str:
+def mdisk(url):
+    header = {
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': 'https://mdisk.me/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36'
+    	 }
     
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
-    }
-    url = url[:-1] if url[-1] == '/' else url
-    token = url.split("/")[-1]
-    
-    
-    api = f"https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={token}"
-    
-    response = requests.get(api, headers=headers).json() 
-        
-    download_url = response["download"]
-    download_url = download_url.replace(" ", "%20")
-    
-    return download_url
+    inp = url 
+    fxl = inp.split("/")
+    cid = fxl[-1]
+
+    URL = f'https://diskuploader.entertainvideo.com/v1/file/cdnurl?param={cid}'
+    res = requests.get(url=URL, headers=header).json()
+    return res['download'] + '\n\n' + res['source']
 
 def gofile(url:str) -> str:
     
