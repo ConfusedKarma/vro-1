@@ -862,7 +862,7 @@ def xpshort(url):
     
     final_url = f"{DOMAIN}/{code}"
     
-    ref = "https://techrfour.com/"
+    ref = "https://www.jankarihoga.com/"
     
     h = {"referer": ref}
   
