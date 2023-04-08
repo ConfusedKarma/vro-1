@@ -95,6 +95,8 @@ def direct_link_generator(link: str):
         return gplinks(link)
     elif 'gofile.io' in link:
         return gofile(link)
+    elif 'linkbox' in link:
+        return linkbox(link)
     elif 'xpshort.com' in link or 'techymozo.com' in link:
         return xpshort(link)
     elif any(x in link for x in fmed_list):
@@ -881,3 +883,28 @@ def xpshort(url):
     try:
         return r.json()['url']
     except: return "Something went wrong :("
+
+def linkbox(url):
+    cget = create_scraper().request
+    try:
+        url = cget('GET', url).url
+        res = cget(
+            'GET', f'https://www.linkbox.to/api/file/detail?itemId={url.split("/")[-1]}').json()
+    except Exception as e:
+        raise DirectDownloadLinkException(f'ERROR: {e.__class__.__name__}')
+    if 'data' not in res:
+        raise DirectDownloadLinkException('ERROR: Data not found!!')
+    data = res['data']
+    if not data:
+        raise DirectDownloadLinkException('ERROR: Data is None!!')
+    if 'itemInfo' not in data:
+        raise DirectDownloadLinkException('ERROR: itemInfo not found!!')
+    itemInfo = data['itemInfo']
+    if 'url' not in itemInfo:
+        raise DirectDownloadLinkException('ERROR: url not found in itemInfo!!')
+    if "name" not in itemInfo:
+        raise DirectDownloadLinkException(
+            'ERROR: Name not found in itemInfo!!')
+    name = quote(itemInfo["name"])
+    raw = itemInfo['url'].split("/", 3)[-1]
+    return f'https://wdl.nuplink.net/{raw}&filename={name}'
