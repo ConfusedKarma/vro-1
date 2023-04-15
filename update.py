@@ -36,7 +36,7 @@ try:
     if len(UPSTREAM_REPO) == 0:
        raise TypeError
 except:
-    UPSTREAM_REPO = "https://deadavatar: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@github.com/DeadAvatar/vro"
+    UPSTREAM_REPO = None
 try:
     if len(UPSTREAM_BRANCH) == 0:
        raise TypeError
